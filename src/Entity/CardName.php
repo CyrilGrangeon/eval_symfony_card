@@ -44,6 +44,7 @@ class CardName
 
     public function getCardName(): ?string
     {
+        
         return $this->card_name;
     }
 

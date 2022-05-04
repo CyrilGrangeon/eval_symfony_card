@@ -10,11 +10,46 @@
         {% block javascripts %}{% endblock %}
     </head>
     <body>
-        <h1 class="text-center">Ma Super collection de cartes </h1>
-
-
-
-
+        <header>
+            <h1 class="text-center">Ma Super collection de cartes </h1>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="{{ path('home') }}">Carte collection</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarColor01">
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="{{ path('home') }}">Accueil</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="{{ path('list_card') }}">Liste des cartes</a>
+                            </li>
+                        </ul>
+                        {% if app.user %}
+                            {% if 'ROLE_ADMIN' in app.user.roles %}
+                                <ul class="navbar-nav m-auto"></ul>
+                            {% endif %}
+                        {% endif %}
+                        <ul class="navbar-nav ms-auto">
+                            {% if app.user %}
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="{{ path('new_card') }}">Ajouter une carte</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="{{ path('app_logout') }}">Deconnection</a>
+                                </li>
+                                {% else %}
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="{{ path('app_login') }}">Connection</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
         {% block body %}{% endblock %}
     </body>
 
