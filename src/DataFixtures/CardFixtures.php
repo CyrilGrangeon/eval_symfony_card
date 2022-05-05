@@ -21,7 +21,7 @@ class CardFixtures extends Fixture
             $card->setCardName("Carte n° $i")
             ->setNumberCardsInCollection($cardNumber)
             ->setCardValueEuros($cardNumber)
-            ->setCardImage("default.png")
+            ->setCardImage('default.png')
             ->setPurchaseDate(new \DateTimeImmutable())
             ->setReleaseDate(new \DateTimeImmutable())
             ->setIsOnSale(true)

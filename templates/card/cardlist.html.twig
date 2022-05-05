@@ -10,16 +10,20 @@
                         </div>
                         <div class="card-body">
                             <h4 class="card-title">{{ card.CardName }}</h4>
-                            <img src="{{ card.CardImage }}" alt="">
+                            <img src="{{ asset('public/uploads/image/' ~ card.CardImage) }}" alt="">
                             <p class="card-text">{{ card.description }}</p>
                             <p class="card-text">Nombre d'exemplaires : {{ card.NumberCardsInCollection }}</p>
                             <p class="card-text">Prix :{{ card.CardValueEuros }} €</p>
                             <p class="card-text">Achetée le {{ card.PurchaseDate |date('d,m,Y')}}</p>
                             {% if card.IsOnSale is same as(TRUE) %}<p class="card-text">En vente </p>{% else %}<p class="card-text"> Pas en vente</p>{% endif %}
-                            
+                            {% if app.user %}
+                                <a class="btn btn-secondary" href="{{ path('delete_card', { id: card.id }) }}">Supprimmer</a>
+                                <a class="btn btn-secondary" href="{{ path('edit_card', { id: card.id }) }}">Modifier</a>
+                            {% endif %}
                         </div>
                     </div>
                     
                 {% endfor %}
         </div>
 {% endblock %}
+                

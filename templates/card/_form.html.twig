@@ -1,14 +1,14 @@
 {{ form_start(form) }}
 
-{{ form_row(form.card_name)}}
-{{ form_row(form.number_cards_in_collection)}}
-{{ form_row(form.card_value_euros)}}
-{{ form_row(form.purchase_date)}}
-{{ form_row(form.release_date)}}
-{{ form_row(form.is_on_sale)}}
-{{ form_row(form.description)}}
+{{ form_row(form.card_name, {'attr': {'class':'form-control'}, 'label':'Nom :' })}}
+{{ form_row(form.number_cards_in_collection, {'attr': {'class':'form-control'}, 'label':'Nombre de cartes dans la collection :' })}}
+{{ form_row(form.card_value_euros, {'attr': {'class':'form-control'}, 'label':'Prix en euros :' })}}
+{{ form_row(form.purchase_date, {'attr': {'class':'form-control'}, 'label':'Date d\'achat :' })}}
+{{ form_row(form.release_date, {'attr': {'class':'form-control'}, 'label':'Date de sortie :' })}}
+{{ form_row(form.is_on_sale, {'attr':{'class':'form-check-imput'}, 'label': 'En vente  ? '})}}
+{{ form_row(form.description, {'attr':{'class' : 'form-control'}, 'label': 'Description'})}}
 
-
+<button type="submit" class="btn btn-primary">Soumettre</button>
 
 
 

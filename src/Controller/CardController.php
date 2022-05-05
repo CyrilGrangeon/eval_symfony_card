@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\CardType;
 use App\Entity\CardName;
 use App\Form\FilterType;
 use App\Service\FileUpload;
@@ -12,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class CardController extends AbstractController
 {
@@ -38,7 +40,7 @@ class CardController extends AbstractController
         
     }
 
-    #[Route('/deletecard', name: 'delete_card')]
+    #[Route('/deletecard/{id}', name: 'delete_card')]
     public function delete(EntityManagerInterface $em, CardName $card): Response
     {
         $em->remove($card);
@@ -53,33 +55,69 @@ class CardController extends AbstractController
     }
 
     #[Route('/newcard', name: 'new_card')]
-    public function new(FileUpload $fileUploader, EntityManagerInterface $em, Request $request): Response{
+    public function new(FileUpload $fileUploader, EntityManagerInterface $em, Request $request): Response
+    {
+        
         $card = new CardName();
         $form = $this->createForm(CardType::class, $card);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
+        if($form->isSubmitted() && $form->isValid())
+        {
             if($card->getCardImage() === null){
                 $card->setCardImage('default.png');
             }else{
-                $imageFile = $form->get('image')->getData();
+                $imageFile = $form->get('card_image')->getData();
                 $imageFileName = $fileUploader->upload($imageFile);
                 $card->setCardImage($imageFileName);
             }
-            $em->persist($card);
-            try{
-                $em->flush();
-                $this->addFlash('success', 'Carte créée.');
-            }catch(Exception $e){
-                $this->addFlash('danger', 'Echec lors de la création de la carte.');
+           $card ->setCardName($form->getData() -> getCardName());
+           
+           $em ->persist($card);
 
+           try
+           {
+                $em -> flush($card);
+           }catch(Exception $e)
+           {
                 return $this->redirectToRoute('new_card');
-            }
-            
-            return $this->redirectToRoute('list_card');
+           }
+           
         }
+
         return $this->render('card/new.html.twig', [
             'form' => $form->createView()
         ]);
     }
+    
+
+    #[Route('/editcard/{id}', name: 'edit_card')]
+    public function edit(FileUpload $fileUploader, CardName $card, Request $request, EntityManagerInterface $em): Response
+    {
+        $oldImage = $card->getCardImage();
+        $form = $this->createForm(CardType::class, $card);
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted() && $form->isValid()){
+         $imageFile = $form->get('card_image')->getData();
+         if($imageFile){
+             
+             if($imageFile !== $imageFile){
+                 $fileUploader->fileDelete($oldImage);
+             }
+            $imageFileName = $fileUploader->upload($imageFile);
+             $card->setCardImage($imageFileName);
+         }else{
+             $imageFile = $form->get('card_image')->getData();
+             $imageFileName = $fileUploader->upload($imageFile);
+             $card->setCardImage($imageFileName);
+         }
+         $em -> flush();
+             return $this->redirectToRoute('list_card');
+        }
+ 
+         return $this->render('card/editcard.html.twig', [
+             'form' => $form->createView()
+         ]);
+     }
 }

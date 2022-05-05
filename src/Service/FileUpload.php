@@ -1,8 +1,10 @@
 <?php
 namespace App\Service;
 
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
+
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 
 class FileUpload
@@ -34,5 +36,15 @@ class FileUpload
     public function getTargetDirectory()
     {
         return $this->targetDirectory;
+    }
+
+    public function fileDelete(?string $image) : void
+    {
+        $fileSystem = new Filesystem();
+        $fileExist = $fileSystem->exists($this->getTargetDirectory(). '/' . $image);
+
+        if($image != null && $fileExist) {
+                unlink($this->getTargetDirectory(). '/' . $image);
+        }
     }
 }
