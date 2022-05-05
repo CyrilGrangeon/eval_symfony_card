@@ -25,7 +25,7 @@ class CardController extends AbstractController
         $cards = $repo->findAll();
 
         if($filter->isSubmitted() && $filter->isValid()){
-            $card = $filter['price']->getData();
+            // $cards = $filter['CardValueEuros']->getData();
             $order = ($filter['priceOrder']->getData()? 'ASC' : 'DESC');
             $cards = $repo->filterCard($order);
         }

@@ -2,6 +2,12 @@
 
 {% block title %}Ma liste de cartes{% endblock %}
 {% block body %}
+
+    {{ form_start(filter) }}
+        {{ form_widget(filter) }}
+    {{ form_end(filter) }}
+
+
         <div class="row d-flex justify-content-center">
                 {% for card in cards %}
                     <div class="card text-white bg-primary m-2 col-md-3">
@@ -19,6 +25,7 @@
                             {% if app.user %}
                                 <a class="btn btn-secondary" href="{{ path('delete_card', { id: card.id }) }}">Supprimmer</a>
                                 <a class="btn btn-secondary" href="{{ path('edit_card', { id: card.id }) }}">Modifier</a>
+                                <a class="btn btn-secondary" href="{{ path('sendmail', {id: card.id}) }}">Faire une offre</a>
                             {% endif %}
                         </div>
                     </div>
